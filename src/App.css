@@ -2,37 +2,211 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.PostCard {
+  display: grid;
+  grid-row-gap: 30px;
+  margin-bottom:30px;
+  margin-left:3px;
+  grid-template-columns: repeat(auto-fit,minmax(320px, 1fr));
+}
+.Title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.test{
+  /* border:1px solid black; */
+  align-items:center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.MobileResponse {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: "100%";
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.PostTitle {
   display: flex;
   flex-direction: column;
+  border: 1px solid rgb(218, 206, 206);
+  border-radius: 10px;
   align-items: center;
+  height: 400px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.CardDesign {
+  max-width: 330px;
+  height: 420px;
+  border: 4px solid rgb(148, 14, 175);
+  border-radius: 10px;
+  cursor:pointer;
+}
+
+.CardDesign:hover{
+   transform:translateY(-10px);
+   border:4px solid black;
+   transition-duration: 1s;
+}
+
+.thumbnail-img {
+  height: 180px;
+  width: 100%;
+}
+
+.login-container {
+  height: 660px;
+  min-width: 100%;
+  background-image: url('../public/background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+
+.Signin-container {
+  height: 660px;
+  min-width: 100%;
+  background-image: url('../public/background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-box {
+  min-width: 500px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  border-radius: 10px;
+  background-color: rgb(39, 34, 34);
+}
+
+::-webkit-input-placeholder {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.Sign-box {
+  min-width: 500px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  border-radius: 10px;
+  background-color: rgb(59, 49, 49);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.login-input {
+  margin-top: 30px;
+  height: 40%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Input-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid white;
+  width: 80%;
+  height: 40px;
+  /* margin-bottom:10px */
+}
+
+input:focus {
+  outline: none;
+}
+
+.file-input {
+  /* visibility: hidden; */
+  display: none;
+  width: 50%;
+}
+
+.file-label {
+  padding: 8px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  /* border:1px solid black; */
+  background-color: rgb(67, 138, 201);
+}
+
+.file-box {
+  width: 82%;
+  padding: 4px;
+  justify-content: space-between;
+  /* border:1px solid black; */
+  color: white
+}
+
+@media (max-width:768px) {
+  .login-container {
+    min-height: 700px;
+    width: 100%;
+    background-image: url('../public/small-back.jpg');
+    background-repeat: no-repeat;
+    background-size: fill;
+    background-position: center center;
   }
-  to {
-    transform: rotate(360deg);
+
+  .Signin-container {
+    min-height: 700px;
+    width: 100%;
+    background-image: url('../public/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .login-box {
+    min-width: 300px;
+    height: 400px;
+  }
+
+  .Sign-box {
+    min-width: 300px;
+    height: 600px;
+    opacity: 0.8
+  }
+
+  .Input-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid white;
+    width: 100%;
+    height: 40px;
+  }
+
+  .file-label {
+    padding: 8px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: rgb(27, 125, 211);
+  }
+
+  .file-box {
+    width: 100%;
   }
 }
