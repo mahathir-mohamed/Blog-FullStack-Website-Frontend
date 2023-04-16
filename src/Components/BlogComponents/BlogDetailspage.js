@@ -73,8 +73,7 @@ export default function BlogDetailspage() {
       FindUser()
       const data={
         Comment:Comment,
-        User:Adminname,
-        Image:ImgUrl
+        User:UserId
       }
       console.log(data);
       console.log(BlogId);
@@ -100,8 +99,8 @@ export default function BlogDetailspage() {
    
   return (
     <Container>
-         <div className="DetailMainContainer">
-          {!Loading?<div className="DetailScreen">
+         {!Loading?<div className="DetailMainContainer">
+          <div className="DetailScreen">
                 <div style={{display:"flex",justifyContent: "center",alignItems: "center"}}>
                  <h2>{Title}</h2>
               </div>
@@ -129,17 +128,11 @@ export default function BlogDetailspage() {
                 </div>
                 {Comments.map((item,index)=>{
                   return(
-                     <CommentSection key={index} Image={item.CommentId.Image}  Author={item.CommentId.User} Comment={item.CommentId.Comment}/>
+                     <CommentSection key={index} Image={item.CommentId.User.Image[0].url}  Author={item.CommentId.User.Username} Comment={item.CommentId.Comment}/>
                   )
                 })}
               </div>
-            </div>:<ClipLoader
-        color="blue"
-        loading={Loading}
-        cssOverride={override}
-        size={40}
-        aria-label="Loading Spinner"
-        data-testid="loader"/>}
+            </div>
             <div className="RecommandScreen">
               <h5>Reccomented Blogs</h5>
               <div style={{display:"flex",justifyContent:"space-evenly"}}> <p>More from</p><p style={{color:"violet"}}>{Username}</p></div>
@@ -154,7 +147,13 @@ export default function BlogDetailspage() {
               </div>
               </div>
             </div>
-         </div>
+         </div>:<ClipLoader
+        color="blue"
+        loading={Loading}
+        cssOverride={override}
+        size={40}
+        aria-label="Loading Spinner"
+        data-testid="loader"/>}
     </Container>
   )
 }

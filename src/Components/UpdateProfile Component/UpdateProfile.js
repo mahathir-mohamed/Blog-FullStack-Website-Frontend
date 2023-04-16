@@ -3,9 +3,13 @@ import { AiOutlineMail,AiFillLock,AiOutlineUser,AiTwotoneEyeInvisible,AiTwotoneE
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import {baseUrl} from "../../config/BaseApi";
+import PacmanLoader from "react-spinners/ClipLoader";
+import {toast,ToastContainer} from 'react-toastify';
 
 export default function UpdateProfile() {
+    const override: CSSProperties = {display: "block",margin: "0 auto",borderColor: "blue",};
     const {id}=useParams();
+    const [loading,setloading]=useState(false);
     const[Email,setEmail]=useState();
     const[Password,setPassword]=useState();
     const[Username,setUsername]=useState();
@@ -16,7 +20,7 @@ export default function UpdateProfile() {
     const formdata = new FormData();
     function FileHandling(e:changeEvent<HTMLInputElement>){
     // setImage(URL.createObjectURL(e.target.files[0]))
-    // PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
+    PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
     // console.log(PreviewImage)
     if(e.target.files){
         formdata.append('Image',e.target.files[0]);
@@ -24,9 +28,9 @@ export default function UpdateProfile() {
     console.log(e.target.files[0])
   }
 
-    // useEffect(()=>{
-    //   PreviewImage.current.src = Image;
-    // },[Image]);
+    useEffect(()=>{
+      PreviewImage.current.src = Image;
+    },[Image]);
 
     useEffect(()=>{
         formdata.append("Email",Email);
@@ -51,8 +55,18 @@ export default function UpdateProfile() {
         }
 
     function UpdateUser(){
+      setloading(true);
       console.log(formdata);
-      axios.post(`${baseUrl}/auth/Update-Profile/${id}`,formdata,{headers:{'content-type':'multipart/form-data'}}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
+      axios.post(`${baseUrl}/auth/Update-Profile/${id}`,formdata,{headers:{'content-type':'multipart/form-data'}}).then((res)=>{
+        console.log(res.data)
+        if(res.status === 200){
+            setloading(false)
+            toast.success(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
+        }else{
+           setloading(false);
+           toast.info(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
+        }
+      }).catch((err)=>{console.log(err)})
         //  window.location.reload();
     }
      
@@ -87,15 +101,23 @@ export default function UpdateProfile() {
                       onChange={(e)=>{FileHandling(e)}}/>
                       </div>
                       <div>
-                     <img src={Image}  style={{width:35,borderRadius:50,height:35}}/>
+                     <img ref={PreviewImage}  style={{width:35,borderRadius:50,height:35}}/>
                       </div>
                    </div> 
                </div>
-                  <div style={{position:"relative",width:"60%",marginTop:20}}>
+               {!loading?<div style={{position:"relative",width:"60%",marginTop:20}}>
                     <input type="button" className="btn btn-primary" value="Update Profile" style={{width:"100%"}} onClick={()=>{UpdateUser()}}/>
-                  </div>
+                  </div>:<div style={{position:"relative",width:"60%",marginTop:20}}>
+                    <PacmanLoader
+                    loading={loading}
+                    cssOverride={override}
+                    size={28}
+                    aria-label="Loading Spinner"/>
+                     <input style={{width:"100%"}} type="button" className="btn btn-danger mt-2" value="Cancel" onClick={()=>{setloading(false)}}/>
+                  </div>}
            </div>
            </form>
+           <ToastContainer/>
         </div>
     </div>
   )
