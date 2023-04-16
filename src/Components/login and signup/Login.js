@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import { AiOutlineMail,AiFillLock,AiTwotoneEyeInvisible,AiTwotoneEye} from "react-icons/ai";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import {baseUrl} from "../../config/BaseApi";
 
 export default function Login() {
     const[Email,setEmail]=useState();
@@ -19,7 +20,7 @@ export default function Login() {
 
     async function LoginUser(){
       if(Email && Password){
-        await axios.post('http://192.168.1.12:8000/auth/auth-account',{Email,Password}).then((res)=>{
+        await axios.post(`${baseUrl}/auth/auth-account`,{Email,Password}).then((res)=>{
           console.log(res.data);
           Cookies.set('Token',res.data.Token,{expires:7});
           Cookies.set('user_id',JSON.stringify(res.data.docs._id),{expires:7})

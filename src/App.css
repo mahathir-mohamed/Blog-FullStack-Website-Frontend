@@ -24,6 +24,14 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+.Reccoment_Title{
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
 .test{
   /* border:1px solid black; */
   align-items:center;
@@ -155,11 +163,72 @@ input:focus {
 .file-box {
   width: 82%;
   padding: 4px;
+  display:flex;
   justify-content: space-between;
   /* border:1px solid black; */
   color: white
 }
+.DetailMainContainer{
+  display:grid;
+  grid-template-columns:3fr 1fr;
+  width:100%;
+}
+.DetailScreen{
+  min-height:500px;
+  padding:10px;
+  width:97%;
+  margin-top:10px;
+}
+.RecommandScreen{
+  position:fixed;
+  right: 0;
+  width:30%;
+  height:80%;
+  overflow-y:auto;
+  padding:10px;
+  bottom:1;
+  background-color: rgb(219, 219, 231);
 
+}
+.BlogThumbnail{
+  height:300px;
+  width:100%;
+}
+.Description{
+  text-align: justify;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+.ReccomentCard{
+  display:flex;
+  height:100px;
+  justify-content: space-between;
+  border-radius:1px;
+  margin-bottom:10px  ;
+  background-color:rgba(255, 253, 253, 0.959);
+}
+.ReccomentImage{
+  width:40%;
+  height:100%
+}
+.CommentTextBox{
+  margin-bottom: 100px;
+  width:100%;
+  display:flex;
+  justify-content:space-evenly;
+  align-items:center;
+}
+.ReccomentDetail{
+  width:60%;
+  height:100%
+}
+.userComment{
+  border:1px solid black;
+  border-radius: 10px;
+  padding:10px;
+  justify-content: space-around;
+}
 @media (max-width:768px) {
   .login-container {
     min-height: 700px;
@@ -176,6 +245,12 @@ input:focus {
     background-image: url('../public/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+  }
+  .DetailMainContainer {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      width: 100%;
   }
 
   .login-box {
@@ -209,4 +284,15 @@ input:focus {
   .file-box {
     width: 100%;
   }
+    .BlogThumbnail {
+      height: 200px;
+      width:100%
+    }
+    .RecommandScreen {
+      position: sticky;
+      top: 10;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
 }

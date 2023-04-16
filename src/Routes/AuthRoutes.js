@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link,Routes,Route,BrowserRouter} from 'react-router-dom';
-import Login from '../Components/Login';
-import Signup from '../Components/Signup';
+import Login from '../Components/login and signup/Login';
+import Signup from '../Components/login and signup/Signup';
 
 export default function BlogRoutes() {
   return (

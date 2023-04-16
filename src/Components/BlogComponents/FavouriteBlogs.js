@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react';
-import PostCard from '../Helpers/PostCard';
+import PostCard from '../../Helpers/PostCard';
 import Container from 'react-bootstrap/Container'
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
 import AOS from 'aos';
 import Cookies from 'js-cookie';
+import {baseUrl} from "../../config/BaseApi";
 
 export default function FavouriteBlogs() {
   const override: CSSProperties = {
@@ -38,10 +39,15 @@ export default function FavouriteBlogs() {
     },[likes])
 
     async function FetchLikes(){
-      //  console.log(Author);
-        await axios.post(`http://192.168.1.12:8000/Favourite`,{user_id:Author}).then((res)=>{
+       console.log(Author);
+        await axios.post(`${baseUrl}/Favourite`,{user_id:Author}).then((res)=>{
           console.log(res.data)
-          setlikes(res.data.result)
+          if(res.status===200){
+            setlikes(res.data.result);
+            setLoading(false);
+          }else{
+            setLoading(true)
+          }
         }).catch((err)=>{console.log(err)});
     }
   return (
@@ -52,7 +58,7 @@ export default function FavouriteBlogs() {
         <div className="PostCard">
           {likes?likes.map((item,index)=>{
             return(
-              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.Author} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} favourite={true} likes={likes}/>
+              <PostCard key={index} data-aos="fade-up" mobile={innerWidth>=700?true:false} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} favourite={true} likes={likes}/>
             )
           }):<ClipLoader
         color="blue"

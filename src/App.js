@@ -1,18 +1,16 @@
 import logo from './logo.svg';
 import React,{useEffect,useState} from 'react'
 import './App.css';
-import Home from './Components/Home';
-import Auth from './Components/Auth';
+import Home from '../src/Components/Home Component/Home';
+import Auth from '../src/Components/Auth Component/Auth';
 import axios from 'axios';
-// import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
+import {baseUrl} from "./config/BaseApi";
 
 function App() {
-  // const [cookies, setCookie,removeCookie] = useCookies(['Token']);
-  const [loggedIn,setLoggedIn]=useState(false);
+  const [loggedIn,setLoggedIn]=useState();
   useEffect(()=>{
     var token = Cookies.get('Token');
-    // console.log(token);
     if(token){
       TokenVerify(token);
     }else{
@@ -20,9 +18,8 @@ function App() {
        setLoggedIn(false);
     }
   },[])
-  async function TokenVerify(token){
-    await axios.post("http://192.168.1.12:8000/auth/check-user",{Token:token}).then((res)=>{
-      // console.log(res);
+  function TokenVerify(token){
+     axios.post(`${baseUrl}/auth/check-user`,{Token:token}).then((res)=>{
       if(res.data.msg=="Succesfully Verified"){
          setLoggedIn(true);
         //  window.location.reload();
@@ -36,7 +33,6 @@ function App() {
   return (
     <div>
       {loggedIn?<Home/>:<Auth/>}
-       {/* <Auth/> */}
     </div>
   );
 }

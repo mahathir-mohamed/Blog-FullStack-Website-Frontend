@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { AiOutlineMail,AiFillLock,AiOutlineUser,AiTwotoneEyeInvisible,AiTwotoneEye } from "react-icons/ai";
 import axios from 'axios';
+import {baseUrl} from "../../config/BaseApi";
 
 export default function SignIn() {
     const[Email,setEmail]=useState();
@@ -20,14 +21,14 @@ export default function SignIn() {
 
   
     const FileHandling = (e:changeEvent<HTMLInputElement>)=>{
-       for (let i = 0; i < e.target.files.length; i++) {
+       for(let i = 0; i < e.target.files.length; i++) {
          formData.append('Image',e.target.files[i])
          }   
     }
 
-    async function CreateUser(){
+    function CreateUser(){
       console.log(formData);
-         await axios.post('http://192.168.1.12:8000/auth/create-account',formData).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
+      axios.post(`${baseUrl}/auth/create-account`,formData).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
          setEmail('');
          setPassword('');
          setUsername('');

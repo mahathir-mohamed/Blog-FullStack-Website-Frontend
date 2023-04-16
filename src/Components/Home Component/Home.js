@@ -1,5 +1,5 @@
-import Header from '../Components/Header';
-import BlogRoutes from '../Routes/BlogRoutes';
+import Header from '../../Components/Header and footer/Header';
+import BlogRoutes from '../../Routes/BlogRoutes';
 
 export default function Home(){
     return(

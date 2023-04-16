@@ -6,14 +6,18 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { BsFillPlusSquareFill,BsFillBookmarkHeartFill,BsPencilSquare} from "react-icons/bs";
 import Cookies from 'js-cookie';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { AiOutlineLogout,AiTwotoneHeart,AiFillEdit,AiFillSetting} from "react-icons/ai";
+import { AiOutlineLogout,AiTwotoneHeart,AiFillEdit,AiFillSetting,AiFillPlusSquare} from "react-icons/ai";
 import axios from 'axios';
+import {baseUrl} from "../../config/BaseApi";
+
 
 
 function Header() {
   const[Author,setAuthor]=useState();
   const[img,setimg]=useState();
+  const [Id,setId]=useState();
   function ClearToken(){
+     window.location.replace("/")
      Cookies.remove('Token');
      window.location.reload();
   }
@@ -24,10 +28,12 @@ function Header() {
        ProfilePicture();  
     } 
   },[Author,img]) 
+
   async function ProfilePicture(){
-    await axios.get(`http://192.168.1.12:8000/auth/FindUser/${Author}`).then(
+    await axios.get(`${baseUrl}/auth/FindUser/${Author}`).then(
             (res)=>{
-              // console.log(res.data);
+              console.log(res.data);
+              setId(res.data.result._id)
               setimg(res.data.result.Image[0].url)
             }
             ).catch((err)=>console.log(err))
@@ -37,7 +43,7 @@ function Header() {
     <Navbar bg="light" expand="lg">
       <Container className="d-flex">
         <div>
-        <Navbar.Brand href="#home" className="text-primary"><img src={process.env.PUBLIC_URL+"logo.png"} style={{borderRadius:50}} width={140}/></Navbar.Brand>
+        <Navbar.Brand href="/" className="text-primary"><img src="https://res.cloudinary.com/doiff4svr/image/upload/v1681197573/Images/logo_up3wdp.png" style={{borderRadius:50}} width={140}/></Navbar.Brand>
         </div>
         <div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -46,31 +52,26 @@ function Header() {
             <Nav.Link href="/">
                  <input style={{width:"100%"}} type="button" value="Trending Blogs" className="btn btn-primary"/>
             </Nav.Link>
-            <Nav.Link href="/Create-Post">
-                <div  className="d-flex justify-content-around align-items-center btn btn-outline-info" style={{width:120}}>
-                    <div>
-                        <BsFillPlusSquareFill size={20}  className="text-dark"/>
-                    </div>
-                    <div className="text-dark align-items-center">
-                        Add post
-                    </div>
-                </div>    
-            </Nav.Link>
             <Nav.Link href="#home">
   <Dropdown>
-      <Dropdown.Toggle style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"110%",marginRight:10}} variant="" id="dropdown-basic">
+      <Dropdown.Toggle style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",marginRight:10}} variant="" id="dropdown-basic">
           <img src={img} width="30" height="30" style={{borderRadius:50}}/>
           Profile 
       </Dropdown.Toggle>
-
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">
-          <div style={{display:"flex",justifyContent:"space-evenly",width:"67%"}}>
-            <BsPencilSquare size={25} />
+        <Dropdown.Item href="/My-Post">
+          <div style={{display:"flex",justifyContent:"space-evenly",width:"66%"}}>
+            <BsPencilSquare size={24} />
             My Blogs
           </div>
           </Dropdown.Item>
-           <Dropdown.Item href="#/action-2">
+        <Dropdown.Item href="/create-post">
+          <div style={{display:"flex",justifyContent:"space-evenly",width:"78%"}}>
+            <AiFillPlusSquare size={25}/>
+            Add Blogs
+          </div>
+          </Dropdown.Item>
+           <Dropdown.Item href={`/Update-Profile/${Id}`}>
           <div style={{display:"flex",justifyContent:"space-evenly",width:"78%"}}>
             <AiFillSetting size={25} />
             Edit Profile

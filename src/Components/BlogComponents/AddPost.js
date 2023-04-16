@@ -3,6 +3,7 @@ import axios from 'axios';
 import {toast,ToastContainer} from 'react-toastify';
 import PacmanLoader from "react-spinners/ClipLoader";
 import Cookies from 'js-cookie';
+import {baseUrl} from "../../config/BaseApi";
 
 
 export default function AddPost(){
@@ -23,14 +24,16 @@ export default function AddPost(){
         formData.append('image',e.target.files[0]);
      }
   }
-  const user = Cookies.get('User');
 
   useEffect(()=>{
-    if(user){
+    const user = Cookies.get('user_id');
        setAuthor(user.replace(/"|'/g, ''))  
-    }
-    console.log(Author);
-  },[])
+       console.log(Author); 
+    
+  },[]);
+  // useEffect(()=>{
+  //    setAuthor(Author)
+  // },[user])
   useEffect(()=>{
     formData.append("Title",Title)
     formData.append("Description",Description);
@@ -41,8 +44,9 @@ export default function AddPost(){
         setTitle("");
         setDescription("");
         if(Title && Description){
+          console.log(Author)
           setLoading(true);
-          await axios.post('http://192.168.1.12:8000/create-blog',formData).then((response)=>{
+          await axios.post(`${baseUrl}/create-blog/${Author}`,formData).then((response)=>{
             if(response.status === 200){
                console.log(response.data)
               //  setBlogId(response.data.id);
@@ -63,7 +67,7 @@ export default function AddPost(){
 
     async function AppendBlog(id){
         if(id && Author){
-          await axios.post(`http://192.168.1.12:8000/auth/AddBlog/${Author}`,{blog_id:id}).then(
+          await axios.post(`${baseUrl}/auth/AddBlog/${Author}`,{blog_id:id}).then(
             (res)=>{
                 if(res.status === 200){
                   toast.success(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});

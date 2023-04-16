@@ -5,6 +5,7 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { RWebShare } from "react-web-share";
 import { BsFillSendFill,BsFillChatHeartFill,BsFillChatLeftHeartFill } from "react-icons/bs";
+import {baseUrl} from "../config/BaseApi";
 
 
 export default function PostCard(props) {
@@ -47,11 +48,11 @@ export default function PostCard(props) {
     }
 
     async function Blogliked(){
-        await  axios.put(`http://192.168.1.12:8000/likes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)});
+        await  axios.put(`${baseUrl}/likes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)});
     }
     async function BlogUnliked(){
         console.log("unliked"+props.id)
-        await axios.put(`http://192.168.1.12:8000/Removelikes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
+        await axios.put(`${baseUrl}/Removelikes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
     }
   
   return (
