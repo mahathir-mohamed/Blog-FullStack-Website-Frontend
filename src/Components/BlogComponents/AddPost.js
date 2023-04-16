@@ -21,7 +21,7 @@ export default function AddPost(){
     const [BlogId,setBlogId] = useState("");
     function FileHandling(e:changeEvent<HTMLInputElement>){
     if(e.target.files){
-        formData.append('image',e.target.files[0]);
+        formData.append('Image',e.target.files[0]);
      }
   }
 
