@@ -15,7 +15,6 @@ export default function BlogDetailspage() {
   margin: "0 auto",
   marginTop:200,
   alignSelf: "center",
-  // borderColor: "red",
 };
     const {BlogId} = useParams();
     const [Image,setImage]=useState();
@@ -31,23 +30,30 @@ export default function BlogDetailspage() {
     const [ImgUrl,setImgUrl]=useState();
     const [Adminname,setAdminname]=useState();
     const [UserId,setUserId]=useState();
-    const user = Cookies.get("user_id");
+    const [Recomment,setRecomment]=useState([]);
+    const [AuthorId,setAuthorId]=useState();
+    const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
-        setUserId(user.replace(/"|'/g, ''));
         FetchPost();
         FetchAllComment();
     },[])
 
     useEffect(()=>{
+      if(AuthorId){
+       ReccomentedBlog(AuthorId) 
+      }
+    },[AuthorId])
+    useEffect(()=>{
        setComments(Comments);
        FindUser();  
     },[Comments])
-    async function FetchPost(){
-      await axios.get(`${baseUrl}/Findpost/${BlogId}`).then((res)=>{
-        console.log(res.data)
+    function FetchPost(){
+      axios.get(`${baseUrl}/Findpost/${BlogId}`).then((res)=>{
+        console.log(res.data.result.Author._id)
         if(res.status===200){
             setTitle(res.data.result.Title);
             setAuthor(res.data.result.Author);
+            setAuthorId(res.data.result.Author._id)
             setDescription(res.data.result.Description);
             setImage(res.data.result.Author.Image[0].url);
             setTime(res.data.result.createdAt);
@@ -60,41 +66,50 @@ export default function BlogDetailspage() {
       }).catch((err)=>{console.log(err)})
     }
 
-    async function FetchAllComment(){
-      await axios.get(`${baseUrl}/Comment/AllComments/${BlogId}`).then((res)=>{
-         console.log(res.data);
+    function FetchAllComment(){
+      axios.get(`${baseUrl}/Comment/AllComments/${BlogId}`).then((res)=>{
+        //  console.log(res.data);
         if(res.status === 200){
           setComments(res.data.result);
         }
       }).catch((err)=>{console.log(err)})
     }
 
-    async function AddComment(){
+    function AddComment(){
       FindUser()
       const data={
         Comment:Comment,
         User:UserId
       }
-      console.log(data);
-      console.log(BlogId);
+      // console.log(data);
+      // console.log(BlogId);
       if(Comment && Adminname && ImgUrl){
-         await axios.post(`${baseUrl}/Comment/AddComment/${BlogId}`, data).then((res)=>{
+         axios.post(`${baseUrl}/Comment/AddComment/${BlogId}`, data).then((res)=>{
         console.log(res.data);
         if(res.status===200){
-           console.log(res.data);
+          //  console.log(res.data);
            setComment("");
         }
       }).catch((err)=>{console.log(err)})
       }
     }
-  async function FindUser(){
-    await axios.get(`${baseUrl}/auth/FindUser/${UserId}`).then((res)=>{
+  function FindUser(){
+    axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
               if(res.status===200){
+                // console.log(res.data.result)
                  setImgUrl(res.data.result.Image[0].url);
-                 setAdminname(res.data.result.Username)
+                 setAdminname(res.data.result.Username);
               }
               // console.log(res.data);
             }).catch((err)=>console.log(err))
+  }
+  function ReccomentedBlog(authorid){
+    axios.get(`${baseUrl}/RecommentPost/${BlogId}`,authorid).then((res)=>{
+      console.log(res.data);
+      if(res.status===200){
+        setRecomment(res.data.result)
+      }
+    }).catch((err)=>{console.log(err)})
   }
    
   return (
@@ -141,10 +156,14 @@ export default function BlogDetailspage() {
               </div>
               <div>
               <h5 style={{color:"blue",marginTop:20}}>People also viewed</h5>
-              <div>
-                  <RecommentCard Title={Title} Image={ThumbnailImage} Description={Description}/>
-                  <RecommentCard Title={Title} Image={ThumbnailImage} Description={Description}/>
-              </div>
+               {Recomment.map((item,index)=>{
+                  return(
+                    <div>
+                     <RecommentCard Title={item.Title} Image={item.Image[0].url} Description={item.Description} id={item._id}/>
+                     </div>
+                  )
+                })}
+              
               </div>
             </div>
          </div>:<ClipLoader

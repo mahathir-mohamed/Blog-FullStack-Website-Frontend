@@ -18,10 +18,9 @@ export default function AllPost() {
    const {innerWidth,innerHeight}=window;
    const [Blog,setBlog]=useState();
    const [loading,setLoading]=useState(true);
-   const [Author,setAuthor]=useState();
    const [likes,setlikes]=useState();
 
-   const user = Cookies.get("user_id");
+   const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         axios.get(`${baseUrl}/all-post`).then((response)=>{
           setBlog(response.data);
@@ -32,19 +31,16 @@ export default function AllPost() {
         AOS.init();
     },[]);
     useEffect(()=>{
-       if(user){
-        setAuthor(user.replace(/"|'/g, ''))
-       } 
-       FetchUser();
-       console.log(likes);
-    },[Author]);
+        FetchUser();
+      //  console.log(likes);
+    },[user]);
 
     useEffect(()=>{
       setlikes(likes);
       console.log(likes)
     },[likes])
     async function FetchUser(){
-        await axios.get(`${baseUrl}/auth/FindUser/${Author}`).then((res)=>{
+        await axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
           console.log(res.data)
           setlikes(res.data.result.likes)
         }).catch((err)=>{console.log(err)});
@@ -57,8 +53,8 @@ export default function AllPost() {
         <div className="PostCard">
           {Blog?Blog.map((item,index)=>{
             return(
-              <a href={`/BlogDetail/${item._id}`} style={{textDecoration:"none",color:"black"}}>
-              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes}/></a>
+              
+              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes}/>
             )
           }):<ClipLoader
         color="blue"

@@ -6,6 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import AOS from 'aos';
 import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
+import AlertModal from '../../Helpers/AlertModal';  
 
 export default function MyBlogs() {
   const override: CSSProperties = {
@@ -19,9 +20,11 @@ export default function MyBlogs() {
    const [Blogs,setBlogs]=useState();
    const [loading,setLoading]=useState(true);
    const [Author,setAuthor]=useState("");
+   const [DeleteItem,setDeleteItem]=useState(false);
 //    const [likes,setlikes]=useState([]);
-
-  
+  const [isOpen, setIsOpen] = useState(false);
+  function openModal() {setIsOpen(!isOpen)}
+  function closeModal() {setIsOpen(!isOpen)}
     useEffect(()=>{
        const user = Cookies.get("user_id");
         setAuthor(user.replace(/"|'/g, '')) 
@@ -46,13 +49,14 @@ export default function MyBlogs() {
     }
   return (
     <Container className="test">
+        <AlertModal setDeleteItem={setDeleteItem} DeleteItem={DeleteItem} closeModal={closeModal} modalIsOpen={isOpen}/>
         <div className="d-flex justify-content-center" style={{width:"100%",padding:20}}>
             <h1  style={{textAlign:"center"}}>My Blog Posts</h1>
         </div>  
         <div className="PostCard">
           {Blogs?Blogs.map((item,index)=>{
             return(
-              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url}  />
+              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url}  />
             )
           }):<ClipLoader
         color="blue"

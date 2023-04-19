@@ -13,7 +13,6 @@ import {baseUrl} from "../../config/BaseApi";
 
 
 function Header() {
-  const[Author,setAuthor]=useState();
   const[img,setimg]=useState();
   const [Id,setId]=useState();
   function ClearToken(){
@@ -21,16 +20,15 @@ function Header() {
      Cookies.remove('Token');
      window.location.reload();
   }
-  const user = Cookies.get('user_id');
+  const user = Cookies.get('user_id').replace(/"|'/g, '');
   useEffect(()=>{
     if(user){
-       setAuthor(user.replace(/"|'/g, ''))
        ProfilePicture();  
     } 
-  },[Author,img]) 
+  },[user,img]) 
 
   async function ProfilePicture(){
-    await axios.get(`${baseUrl}/auth/FindUser/${Author}`).then(
+    await axios.get(`${baseUrl}/auth/FindUser/${user}`).then(
             (res)=>{
               console.log(res.data);
               setId(res.data.result._id)
