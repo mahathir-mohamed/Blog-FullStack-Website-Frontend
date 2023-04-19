@@ -79,7 +79,7 @@ export default function BlogDetailspage() {
       FindUser()
       const data={
         Comment:Comment,
-        User:UserId
+        User:user
       }
       // console.log(data);
       // console.log(BlogId);
