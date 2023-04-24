@@ -127,7 +127,7 @@ export default function BlogDetailspage() {
                  </div>
               </div>
               <div style={{display:"flex",justifyContent: "center",alignItems: "center"}}>
-                 <img className="BlogThumbnail" src={ThumbnailImage}/>
+                 <img className="BlogThumbnail" src={ThumbnailImage?ThumbnailImage:process.env.PUBLIC_URL+"logo.png"}/>
               </div>
               <div style={{width:"100%",display:"flex",justifyContent:"center",alignItems: "center"}}>
                  <p className="Description">{Description}</p>

@@ -43,7 +43,7 @@ export default function MyBlogs() {
     async function FetchBlogs(){
       //  console.log(Author);
         await axios.get(`${baseUrl}/MyBlogs/${Author}`).then((res)=>{
-          console.log(res.data)
+          console.log(res.data) 
           setBlogs(res.data.result)
         }).catch((err)=>{console.log(err)});
     }
@@ -51,12 +51,12 @@ export default function MyBlogs() {
     <Container className="test">
         <AlertModal setDeleteItem={setDeleteItem} DeleteItem={DeleteItem} closeModal={closeModal} modalIsOpen={isOpen}/>
         <div className="d-flex justify-content-center" style={{width:"100%",padding:20}}>
-            <h1  style={{textAlign:"center"}}>My Blog Posts</h1>
+            <h1 style={{textAlign:"center"}}>My Blog Posts</h1>
         </div>  
         <div className="PostCard">
           {Blogs?Blogs.map((item,index)=>{
             return(
-              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url}  />
+              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} />
             )
           }):<ClipLoader
         color="blue"
@@ -68,13 +68,8 @@ export default function MyBlogs() {
       />}
 
       {/* <div style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}><lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_e3pteeho.json"  background="transparent"  speed="1" style={{width:300,height:300}}  loop  autoplay></lottie-player></div> */}
-         
-            
         </div>
     </Container>
   )
 }
 
-// const PostCard = {
-
-// }

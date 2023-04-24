@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
 
 
+
 export default function AddPost(){
     const override: CSSProperties = {
   display: "block",
@@ -17,13 +18,9 @@ export default function AddPost(){
     const [color, setColor] = useState("#ffffff");
     const[Description,setDescription] = useState("");
     const [Author,setAuthor] = useState("");
+    const [Image,setImage] = useState("");
     const formData=new FormData();
     const [BlogId,setBlogId] = useState("");
-    function FileHandling(e:changeEvent<HTMLInputElement>){
-    if(e.target.files){
-        formData.append('Image',e.target.files[0]);
-     }
-  }
 
   useEffect(()=>{
     const user = Cookies.get('user_id');
@@ -31,6 +28,20 @@ export default function AddPost(){
        console.log(Author); 
     
   },[]);
+
+  const FileHandling = (e)=>{
+     const file = e.target.files[0];
+     setFiletobase(file);
+     console.log(file);
+    //  console.log(Image);
+  }
+  function setFiletobase(file){
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend=()=>{
+      setImage(reader.result)
+    }
+  }
   // useEffect(()=>{
   //    setAuthor(Author)
   // },[user])
@@ -38,7 +49,8 @@ export default function AddPost(){
     formData.append("Title",Title)
     formData.append("Description",Description);
     formData.append("Author",Author);
-  },[Title,Description,Author])
+    formData.append("Image",Image)
+  },[Title,Description,Author,Image])
 
     async function UploadData(){
         setTitle("");

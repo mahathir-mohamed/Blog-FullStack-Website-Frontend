@@ -81,7 +81,7 @@ export default function PostCard(props) {
     <div className="CardDesign">
        <a href={`/BlogDetail/${props.id}`} style={{textDecoration:"none",color:"black"}}>
         <div className="thumbnail-img" >
-            <img style={{height:"100%",width:"100%",borderWidth:70}} src={props.image}/>
+            <img style={{height:"100%",width:"100%",borderWidth:70}} src={props.image?props.image:process.env.PUBLIC_URL+"logo.png"}/>
         </div>
         </a>
         <div style={{width:"100%"}}>

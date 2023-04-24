@@ -18,14 +18,29 @@ export default function UpdateProfile() {
     const  PreviewImage = useRef("");
     const SwitchVisible = () => setVisible(!Visible)
     const formdata = new FormData();
-    function FileHandling(e:changeEvent<HTMLInputElement>){
-    // setImage(URL.createObjectURL(e.target.files[0]))
-    PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
-    // console.log(PreviewImage)
-    if(e.target.files){
-        formdata.append('Image',e.target.files[0]);
-     }
+  //   function FileHandling(e:changeEvent<HTMLInputElement>){
+  //   // setImage(URL.createObjectURL(e.target.files[0]))
+  //   PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
+  //   // console.log(PreviewImage)
+  //   if(e.target.files){
+  //       formdata.append('Image',e.target.files[0]);
+  //    }
+  //   console.log(e.target.files[0])
+  // }
+
+ const FileHandling = (e)=>{
+      PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
+      for(let i=0;i<e.target.files.length;i++){
+      formdata.append("Image",e.target.files[i])
+    }
     console.log(e.target.files[0])
+  }
+  function setFiletobase(file){
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend=()=>{
+      setImage(reader.result)
+    }
   }
 
     useEffect(()=>{
@@ -35,6 +50,7 @@ export default function UpdateProfile() {
     useEffect(()=>{
         formdata.append("Email",Email);
         formdata.append("Username",Username);
+        // formdata.append("Image",Image)
     },[Email,Username]);
 
     useEffect(()=>{

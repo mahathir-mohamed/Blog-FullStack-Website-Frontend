@@ -17,23 +17,39 @@ export default function SignIn() {
         formData.append("Email",Email);
         formData.append("Password",Password);
         formData.append("Username",Username);
-    },[Email,Password,Username]);
+        formData.append("Image",Image);
+    },[Email,Password,Username,Image]);
 
   
-    const FileHandling = (e:changeEvent<HTMLInputElement>)=>{
-       for(let i = 0; i < e.target.files.length; i++) {
-         formData.append('Image',e.target.files[i])
-         }   
+   const FileHandling = (e)=>{
+     const file = e.target.files[0];
+     setFiletobase(file);
+    //  console.log(file);
+    //  console.log(Image);
+    // for(let i=0;i<e.target.files.length;i++){
+    //   formData.append("Image",e.target.files[i])
+    // }
+    console.log(e.target.files[0])
+  }
+  function setFiletobase(file){
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend=()=>{
+      setImage(reader.result);
+      // console.log(reader.result)
     }
+  }
 
-    function CreateUser(){
-      console.log(formData);
-      axios.post(`${baseUrl}/auth/create-account`,formData).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
-         setEmail('');
-         setPassword('');
-         setUsername('');
-         setImage("");
-     
+  // useEffect(()=>{
+  //    setImage(Image);
+  // },[Image])
+    async function CreateUser(){
+      // console.log(formData);
+      await axios.post(`${baseUrl}/auth/create-account`,formData).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
+        //  setEmail('');
+        //  setPassword('');
+        //  setUsername('');
+        //  setImage('');
     }
      
   return (
@@ -67,7 +83,7 @@ export default function SignIn() {
                       // setImage(e.target.files[0].name)
                       }}/>
                       {/* <input type="file" onChange={(e)=>{FileHandling(e)}}/> */}
-                     {Image}
+                     {/* {Image} */}
                   </div>
                   <div style={{color:"white"}}> 
                     Already have an account? <a href="/" style={{width:70}}>Login</a>
