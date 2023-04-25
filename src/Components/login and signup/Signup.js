@@ -17,28 +17,21 @@ export default function SignIn() {
         formData.append("Email",Email);
         formData.append("Password",Password);
         formData.append("Username",Username);
-        formData.append("Image",Image);
+        // formData.append("Image",Image);
     },[Email,Password,Username,Image]);
 
   
    const FileHandling = (e)=>{
      const file = e.target.files[0];
-     setFiletobase(file);
+    //  setFiletobase(file);
     //  console.log(file);
     //  console.log(Image);
-    // for(let i=0;i<e.target.files.length;i++){
-    //   formData.append("Image",e.target.files[i])
-    // }
+    for(let i=0;i<e.target.files.length;i++){
+      formData.append("Image",e.target.files[i])
+    }
     console.log(e.target.files[0])
   }
-  function setFiletobase(file){
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend=()=>{
-      setImage(reader.result);
-      // console.log(reader.result)
-    }
-  }
+ 
 
   // useEffect(()=>{
   //    setImage(Image);

@@ -25,32 +25,20 @@ export default function AddPost(){
   useEffect(()=>{
     const user = Cookies.get('user_id');
        setAuthor(user.replace(/"|'/g, ''))  
-       console.log(Author); 
-    
+       console.log(Author);
   },[]);
 
   const FileHandling = (e)=>{
-     const file = e.target.files[0];
-     setFiletobase(file);
-     console.log(file);
-    //  console.log(Image);
-  }
-  function setFiletobase(file){
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend=()=>{
-      setImage(reader.result)
+    for(let i=0;i<e.target.files.length;i++){
+      formData.append("Image",e.target.files[i]);
     }
   }
-  // useEffect(()=>{
-  //    setAuthor(Author)
-  // },[user])
+
   useEffect(()=>{
     formData.append("Title",Title)
     formData.append("Description",Description);
     formData.append("Author",Author);
-    formData.append("Image",Image)
-  },[Title,Description,Author,Image])
+  },[Title,Description,Author])
 
     async function UploadData(){
         setTitle("");

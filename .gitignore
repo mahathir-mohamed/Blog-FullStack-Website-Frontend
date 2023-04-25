@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#  function setFiletobase(file){
+#     const reader = new FileReader();
+#     reader.readAsDataURL(file);
+#     reader.onloadend=()=>{
+#       setImage(reader.result);
+#       // console.log(reader.result)
+#     }
+#   }
