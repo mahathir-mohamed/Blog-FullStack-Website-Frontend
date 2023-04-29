@@ -80,8 +80,8 @@ export default function PostCard(props) {
   return (
     <div className="CardDesign">
        <a href={`/BlogDetail/${props.id}`} style={{textDecoration:"none",color:"black"}}>
-        <div className="thumbnail-img" >
-            <img style={{height:"100%",width:"100%",borderWidth:70}} src={props.image?props.image:process.env.PUBLIC_URL+"logo.png"}/>
+        <div className="thumbnail-img-container" >
+            <img style={{height:"100%",width:"100%",borderWidth:70}} className="thumbnail-img" src={props.image?props.image:process.env.PUBLIC_URL+"logo.png"}/>
         </div>
         </a>
         <div style={{width:"100%"}}>
@@ -93,14 +93,19 @@ export default function PostCard(props) {
                 <p className="description" style={{fontSize:13,textOverflow:"ellipsis",overflow:"hidden",fontFamily:"Josefin Sans"}}>{props.Desc}</p>
             </div>
             <div style={{width:"100%"}}>
-                <div style={{padding:6,display:"flex",justifyContent:"space-between",width:"100%"}}>
-                    <p style={{fontFamily:"Alkatra"}}>Author : </p>
-                    <p style={{color:"violet",fontFamily:"Delicious Handrawn"}}>{props.Author}</p>
+                <div style={{padding:6,display:"flex",justifyContent:"space-between",width:"100%",alignItems:"center"}} className="PostCard-Profile">
+                    {/* <p style={{fontFamily:"Alkatra"}}>Author : </p> */}
+                    <div className="PostCard-Profile-img">
+                    <img  src={props.AuthorImage?props.AuthorImage:process.env.PUBLIC_URL+"logo.png"} style={{height:35,width:35,borderRadius:50}}/>
+                    </div>
+                    <div className="PostCard-Profile-Name" >
+                      <p style={{color:"violet",fontFamily:"Delicious Handrawn",marginTop:12}}>{props.Author}</p>
+                      <p style={{fontFamily:"Delicious Handrawnm",marginTop:-18}}><Moment format="YYYY/MM/DD HH:mm">{props.createdAt}</Moment></p>
+                    </div>
                 </div>
-                <div style={{marginTop:-30,padding:6,display:"flex",justifyContent:"space-between",width:"100%"}}>
-                    <p style={{fontFamily:"Alkatra"}}>Published At : </p>
-                    <p style={{fontFamily:"Delicious Handrawn"}}><Moment format="YYYY/MM/DD HH:mm">{props.createdAt}</Moment></p>
-                </div>
+                {/* <div style={{marginTop:-30,padding:6,display:"flex",justifyContent:"space-between",width:"100%"}}>
+                    
+                </div> */}
             </div>
             </a>
                 {!props.MyBlog?
@@ -121,6 +126,7 @@ export default function PostCard(props) {
             {/* </div> */}
         </div>
         <ToastContainer/>
+        <hr className="hr2"/>
     </div>
   )
 }

@@ -58,7 +58,7 @@ export default function FavouriteBlogs() {
         <div className="PostCard">
           {likes?likes.map((item,index)=>{
             return(
-              <PostCard key={index} data-aos="fade-up" mobile={innerWidth>=700?true:false} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} favourite={true} likes={likes}/>
+              <PostCard key={index} data-aos="fade-up" mobile={innerWidth>=700?true:false} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} AuthorImage={item.BlogId.Author.Image[0].url} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} favourite={true} likes={likes}/>
             )
           }):<ClipLoader
         color="blue"

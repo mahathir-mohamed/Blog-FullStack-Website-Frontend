@@ -54,7 +54,7 @@ export default function AllPost() {
           {Blog?Blog.map((item,index)=>{
             return(
               
-              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes}/>
+              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username} AuthorImage={item.Author.Image[0].url}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes}/>
             )
           }):<ClipLoader
         color="blue"

@@ -56,7 +56,7 @@ export default function MyBlogs() {
         <div className="PostCard">
           {Blogs?Blogs.map((item,index)=>{
             return(
-              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} />
+              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} AuthorImage={item.BlogId.Author.Image[0].url}  Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} />
             )
           }):<ClipLoader
         color="blue"
