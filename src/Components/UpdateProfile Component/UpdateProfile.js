@@ -5,28 +5,22 @@ import axios from 'axios';
 import {baseUrl} from "../../config/BaseApi";
 import PacmanLoader from "react-spinners/ClipLoader";
 import {toast,ToastContainer} from 'react-toastify';
+import {useSelector} from 'react-redux';
 
 export default function UpdateProfile() {
     const override: CSSProperties = {display: "block",margin: "0 auto",borderColor: "blue",};
     const {id}=useParams();
+    const userData = useSelector((state)=>state.user.userDetail);
     const [loading,setloading]=useState(false);
     const[Email,setEmail]=useState();
     const[Password,setPassword]=useState();
     const[Username,setUsername]=useState();
+    const [userdata,setuserdata]=useState();
     const [Image,setImage]=useState("");
     const[Visible,setVisible]=useState(false);
     const  PreviewImage = useRef("");
     const SwitchVisible = () => setVisible(!Visible)
     const formdata = new FormData();
-  //   function FileHandling(e:changeEvent<HTMLInputElement>){
-  //   // setImage(URL.createObjectURL(e.target.files[0]))
-  //   PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
-  //   // console.log(PreviewImage)
-  //   if(e.target.files){
-  //       formdata.append('Image',e.target.files[0]);
-  //    }
-  //   console.log(e.target.files[0])
-  // }
 
  const FileHandling = (e)=>{
       PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
@@ -48,27 +42,26 @@ export default function UpdateProfile() {
     },[Image]);
 
     useEffect(()=>{
+      setUsername(userData.Username);
+      setEmail(userData.Email);
+      if(userData.Image){
+         setImage(userData.Image[0].url);
+      }
+      console.log("ok");
+    },[userData]);
+
+    // useEffect(()=>{
+    //  console.log(userData);
+    // },[Username])
+
+    useEffect(()=>{
         formdata.append("Email",Email);
         formdata.append("Username",Username);
         // formdata.append("Image",Image)
     },[Email,Username]);
 
-    useEffect(()=>{
-      FetchUser();
-      // console.log(id);
-    },[])
 
-   function FetchUser(){
-           axios.get(`${baseUrl}/auth/FindUser/${id}`).then(
-            (res)=>{
-            //   console.log(res.data.result);
-            //   setId(res.data.result._id)
-              setUsername(res.data.result.Username);
-              setEmail(res.data.result.Email);
-              setImage(res.data.result.Image[0].url)
-            }
-            ).catch((err)=>console.log(err))
-        }
+  
 
     function UpdateUser(){
       setloading(true);

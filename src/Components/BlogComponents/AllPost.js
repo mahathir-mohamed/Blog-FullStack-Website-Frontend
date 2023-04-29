@@ -6,6 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import AOS from 'aos';
 import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
+import {useSelector} from 'react-redux';
 
 export default function AllPost() {
   const override: CSSProperties = {
@@ -19,6 +20,7 @@ export default function AllPost() {
    const [Blog,setBlog]=useState();
    const [loading,setLoading]=useState(true);
    const [likes,setlikes]=useState();
+   const userData = useSelector((state)=>state.user.userDetail);
 
    const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
@@ -31,20 +33,19 @@ export default function AllPost() {
         AOS.init();
     },[]);
     useEffect(()=>{
-        FetchUser();
-      //  console.log(likes);
-    },[user]);
+      setlikes(userData.likes)
+    },[userData]);
 
-    useEffect(()=>{
-      setlikes(likes);
-      console.log(likes)
-    },[likes])
-    async function FetchUser(){
-        await axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
-          console.log(res.data)
-          setlikes(res.data.result.likes)
-        }).catch((err)=>{console.log(err)});
-    }
+      // useEffect(()=>{
+      //   setlikes(likes);
+      //   console.log(likes)
+      // },[likes])
+    // async function FetchUser(){
+    //     await axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
+    //       console.log(res.data)
+    //       setlikes(res.data.result.likes)
+    //     }).catch((err)=>{console.log(err)});
+    // }
   return (
     <Container className="test">
         <div className="d-flex justify-content-center" style={{width:"100%",padding:20}}>

@@ -9,10 +9,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { AiOutlineLogout,AiTwotoneHeart,AiFillEdit,AiFillSetting,AiFillPlusSquare} from "react-icons/ai";
 import axios from 'axios';
 import {baseUrl} from "../../config/BaseApi";
+import {useSelector} from 'react-redux';
 
 
 
 function Header() {
+  const userData = useSelector((state)=>state.user.userDetail)
   const[img,setimg]=useState();
   const [Id,setId]=useState();
   function ClearToken(){
@@ -20,22 +22,23 @@ function Header() {
      Cookies.remove('Token');
      window.location.reload();
   }
-  const user = Cookies.get('user_id').replace(/"|'/g, '');
+  // const user = Cookies.get('user_id').replace(/"|'/g, '');
   useEffect(()=>{
-    if(user){
-       ProfilePicture();  
-    } 
-  },[user,img]) 
+    if(userData.Image){
+      setimg(userData.Image[0].url);
+      setId(userData._id);
+    }
+  },[userData]) 
 
-  async function ProfilePicture(){
-    await axios.get(`${baseUrl}/auth/FindUser/${user}`).then(
-            (res)=>{
-              console.log(res.data);
-              setId(res.data.result._id)
-              setimg(res.data.result.Image[0].url)
-            }
-            ).catch((err)=>console.log(err))
-  }
+  // async function ProfilePicture(){
+  //   await axios.get(`${baseUrl}/auth/FindUser/${user}`).then(
+  //           (res)=>{
+  //             console.log(res.data);
+  //             setId(res.data.result._id)
+  //             setimg(res.data.result.Image[0].url)
+  //           }
+  //           ).catch((err)=>console.log(err))
+  // }
   return (
     <div>
     <Navbar bg="light" expand="lg">

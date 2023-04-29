@@ -8,6 +8,8 @@ import RecommentCard from '../../Helpers/RecommentCard';
 import CommentSection from '../../Helpers/CommentSection';
 import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
+import {useSelector} from 'react-redux';
+
 
 export default function BlogDetailspage() {
    const override: CSSProperties = {
@@ -32,6 +34,7 @@ export default function BlogDetailspage() {
     const [UserId,setUserId]=useState();
     const [Recomment,setRecomment]=useState([]);
     const [AuthorId,setAuthorId]=useState();
+    const userData = useSelector((state)=>state.user.userDetail)
     const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         FetchPost();
@@ -44,9 +47,9 @@ export default function BlogDetailspage() {
       }
     },[AuthorId])
     useEffect(()=>{
-       setComments(Comments);
-       FindUser();  
+       setComments(Comments); 
     },[Comments])
+
     function FetchPost(){
       axios.get(`${baseUrl}/Findpost/${BlogId}`).then((res)=>{
         console.log(res.data.result.Author._id)
@@ -74,15 +77,17 @@ export default function BlogDetailspage() {
         }
       }).catch((err)=>{console.log(err)})
     }
-
+   useEffect(()=>{
+    if(userData.Image){
+       setImgUrl(userData.Image[0].url);
+       setAdminname(userData.Username);
+    }
+   },[userData])
     function AddComment(){
-      FindUser()
       const data={
         Comment:Comment,
         User:user
       }
-      // console.log(data);
-      // console.log(BlogId);
       if(Comment && Adminname && ImgUrl){
          axios.post(`${baseUrl}/Comment/AddComment/${BlogId}`, data).then((res)=>{
         console.log(res.data);
@@ -93,16 +98,16 @@ export default function BlogDetailspage() {
       }).catch((err)=>{console.log(err)})
       }
     }
-  function FindUser(){
-    axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
-              if(res.status===200){
-                // console.log(res.data.result)
-                 setImgUrl(res.data.result.Image[0].url);
-                 setAdminname(res.data.result.Username);
-              }
-              // console.log(res.data);
-            }).catch((err)=>console.log(err))
-  }
+  // function FindUser(){
+  //   axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
+  //             if(res.status===200){
+  //               // console.log(res.data.result)
+  //                setImgUrl(res.data.result.Image[0].url);
+  //                setAdminname(res.data.result.Username);
+  //             }
+  //             // console.log(res.data);
+  //           }).catch((err)=>console.log(err))
+  // }
   function ReccomentedBlog(authorid){
     axios.get(`${baseUrl}/RecommentPost/${BlogId}`,authorid).then((res)=>{
       console.log(res.data);
