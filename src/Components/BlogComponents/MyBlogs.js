@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
 import AlertModal from '../../Helpers/AlertModal';  
 
+
 export default function MyBlogs() {
   const override: CSSProperties = {
   display: "block",
@@ -16,6 +17,7 @@ export default function MyBlogs() {
   alignSelf: "center",
   // borderColor: "red",
 };
+   
    const {innerWidth,innerHeight}=window;
    const [Blogs,setBlogs]=useState();
    const [loading,setLoading]=useState(true);
@@ -27,8 +29,9 @@ export default function MyBlogs() {
   function closeModal() {setIsOpen(!isOpen)}
     useEffect(()=>{
        const user = Cookies.get("user_id");
-        setAuthor(user.replace(/"|'/g, '')) 
+        setAuthor(user.replace(/"|'/g, '')) ;
     },[])
+   
   
     useEffect(()=>{
       if(Author){
@@ -49,14 +52,14 @@ export default function MyBlogs() {
     }
   return (
     <Container className="test">
-        <AlertModal setDeleteItem={setDeleteItem} DeleteItem={DeleteItem} closeModal={closeModal} modalIsOpen={isOpen}/>
+        <AlertModal  setDeleteItem={setDeleteItem} DeleteItem={DeleteItem} closeModal={closeModal} modalIsOpen={isOpen}/>
         <div className="d-flex justify-content-center" style={{width:"100%",padding:20}}>
             <h1 style={{textAlign:"center"}}>My Blog Posts</h1>
         </div>  
         <div className="PostCard">
           {Blogs?Blogs.map((item,index)=>{
             return(
-              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem} openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} AuthorImage={item.BlogId.Author.Image[0].url}  Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} />
+              <PostCard DeleteItem={DeleteItem} setDeleteItem={setDeleteItem}  openModal={openModal} MyBlog={true} data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.BlogId.Title} id={item.BlogId._id} Desc={item.BlogId.Description} AuthorImage={item.BlogId.Author.Image[0].url}  Author={item.BlogId.Author.Username} createdAt={item.BlogId.createdAt} image={item.BlogId.Image[0].url} />
             )
           }):<ClipLoader
         color="blue"

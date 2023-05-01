@@ -6,6 +6,7 @@ import FavouriteBlogs from '../Components/BlogComponents/FavouriteBlogs';
 import MyBlogs from '../Components/BlogComponents/MyBlogs';
 import BlogDetailsPage from '../Components/BlogComponents/BlogDetailspage';
 import UpdateProfile from '../Components/UpdateProfile Component/UpdateProfile';
+import EditPost from '../Components/BlogComponents/EditPost';
 
 export default function BlogRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function BlogRoutes() {
         <Route path="/My-Post" element={<MyBlogs/>}/>
         <Route path="/BlogDetail/:BlogId" element={<BlogDetailsPage/>}/>
         <Route path="/Update-Profile/:id" element={<UpdateProfile/>}/>
+        <Route path="/Edit-Post/:id" element={<EditPost/>}/>
       </Routes>
     </BrowserRouter>
   )

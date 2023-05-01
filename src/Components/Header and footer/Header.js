@@ -41,8 +41,8 @@ function Header() {
   // }
   return (
     <div>
-    <Navbar bg="light" expand="lg">
-      <Container className="d-flex">
+    <Navbar  expand="lg">
+      <Container className="d-flex justify-content-between">
         <div>
         <Navbar.Brand href="/" className="text-primary"><img src="https://res.cloudinary.com/doiff4svr/image/upload/v1681197573/Images/logo_up3wdp.png" style={{borderRadius:50}} width={140}/></Navbar.Brand>
         </div>

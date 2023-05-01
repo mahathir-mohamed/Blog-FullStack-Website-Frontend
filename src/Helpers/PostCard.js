@@ -9,10 +9,17 @@ import {baseUrl} from "../config/BaseApi";
 import {toast,ToastContainer} from 'react-toastify';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import useSound from 'use-sound';    
+import useSound from 'use-sound';
+import {useSelector,useDispatch} from 'react-redux';
+import {userActions} from '../Redux/userDetailSlice';
+import {useNavigate} from 'react-router-dom';
 
 
 export default function PostCard(props) {
+    const navigate = useNavigate();
+    const BlogId = useSelector((state)=>state.user.BlogId);
+    const isLoading = useSelector((state)=>state.user.isLoading);
+    const dispatch = useDispatch();
     const likeSound = process.env.PUBLIC_URL + 'like-sound.mp3';
     const [play] = useSound(likeSound);
     const [Author,setAuthor]=useState();
@@ -24,6 +31,10 @@ export default function PostCard(props) {
        setAuthor(user.replace(/"|'/g, ''));
     } 
     },[Author])
+    useEffect(()=>{
+      dispatch(userActions.setBlogId({id:props.id}));
+      console.log(BlogId);
+    },[props.id])
     useEffect(()=>{
         if(props.likes && props.favourite)
         {
@@ -54,6 +65,7 @@ export default function PostCard(props) {
        }
     }
 
+
     function Blogliked(){
         axios.put(`${baseUrl}/likes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)});
     }
@@ -62,19 +74,8 @@ export default function PostCard(props) {
         axios.put(`${baseUrl}/Removelikes/${Author}`,{blog_id:props.id}).then((res)=>{console.log(res.data)}).catch((err)=>{console.log(err)})
     }
     function DeletePost(id){
-    props.openModal();
-    if(props.DeleteItem){
-           axios.post(`${baseUrl}/delete/${id}`,{id:Author}).then((res)=>{console.log(res.data);
-        if(res.status===200){
-           toast.success(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
-        }else{
-            toast.info(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
-        }
-    }).catch((err)=>{
-          toast.error("Please try again sometines later",{position:toast.POSITION.BOTTOM_CENTER});
-       })
-    }
-    props.setDeleteItem(false);
+        console.log(BlogId);
+        props.openModal();
     }
   
   return (
@@ -89,7 +90,7 @@ export default function PostCard(props) {
             <div style={{width:"100%",paddingLeft:5,paddingTop:4}}>
                 <p style={{fontSize:18,fontWeight:"bold",textAlign:"center",fontFamily:"Alkatra"}} className="Title">{props.Title}</p>
             </div>
-            <div style={{padding:5}}>
+            <div style={{padding:5,height:50}}>
                 <p className="description" style={{fontSize:13,textOverflow:"ellipsis",overflow:"hidden",fontFamily:"Josefin Sans"}}>{props.Desc}</p>
             </div>
             <div style={{width:"100%"}}>
@@ -120,12 +121,14 @@ export default function PostCard(props) {
                     <RWebShare data={{text:"Blogger's World Share",url: "http://localhost:3000",title: "Blogger's World Share Link"}} writeText="http://localhost:3000" onClick={() => console.log("shared successfully!")}>
                     <BsFillSendFill size={25}/>
                     </RWebShare>
-                    <AiFillEdit color="blue" size={25}/>
+                    <a href={`/Edit-Post/${props.id}`}>
+                    <AiFillEdit  color="blue" size={25}/>
+                    </a>
                     <AiFillDelete onClick={()=>{DeletePost(props.id)}} color="red" size={25} />
                 </div>}
             {/* </div> */}
         </div>
-        <ToastContainer/>
+        {isLoading?<ToastContainer/>:null}
         <hr className="hr2"/>
     </div>
   )

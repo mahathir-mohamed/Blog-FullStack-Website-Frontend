@@ -109,7 +109,36 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-
+.Title{
+  border:none;
+  /* width:100%; */
+  border-bottom:1px solid rgb(240, 235, 235);
+}
+#input::placeholder {
+  color:white;
+}
+#input{
+  background-color:transparent;
+  color:white;
+}
+.Post-Container{
+  width:100%;
+  /* border:1px solid black; */
+}
+.AddPostContainer{
+  width:100%;
+  height:100%;
+  background-image: linear-gradient(to bottom left, rgb(71, 9, 241), rgb(185, 177, 201));
+  /* border:1px solid black; */
+}
+textarea::placeholder {
+  color:white;
+}
+textarea{
+  color:white;
+  background-color: transparent;
+  border:1px solid white;
+}
 .login-box {
   min-width: 500px;
   height: 400px;

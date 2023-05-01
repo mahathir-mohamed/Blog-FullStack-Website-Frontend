@@ -4,15 +4,18 @@ import {toast,ToastContainer} from 'react-toastify';
 import PacmanLoader from "react-spinners/ClipLoader";
 import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
+import {useParams} from 'react-router-dom';
 
 
 
-export default function AddPost(){
+export default function EditPost(){
+
     const override: CSSProperties = {
   display: "block",
   margin: "0 auto",
   borderColor: "blue",
 };
+    const id = useParams();
     const[Title,setTitle] = useState("");
     const [Loading, setLoading] = useState(false);
     const [color, setColor] = useState("#ffffff");
@@ -23,16 +26,15 @@ export default function AddPost(){
     const [BlogId,setBlogId] = useState("");
     const  PreviewImage = useRef("");
 
-    // useEffect(()=>{
-    //   PreviewImage.current.src = Image;
-    // },[Image]);
+    useEffect(()=>{
+      PreviewImage.current.src = Image;
+    },[Image]);
+
+    useEffect(()=>{
+          fetchPost()
+    },[])
 
 
-  useEffect(()=>{
-    const user = Cookies.get('user_id');
-       setAuthor(user.replace(/"|'/g, ''))  
-       console.log(Author);
-  },[]);
 
   const FileHandling = (e)=>{
      PreviewImage.current.src = URL.createObjectURL(e.target.files[0])
@@ -47,17 +49,26 @@ export default function AddPost(){
     formData.append("Author",Author);
   },[Title,Description,Author])
 
+  const fetchPost = async ()=>{
+    console.log(`${baseUrl}/FindPost/${id.id}`);
+     await axios.get(`${baseUrl}/FindPost/${id.id}`).then((res)=>{
+        console.log(res);
+        if(res.status === 200){
+            setTitle(res.data.result.Title);
+            setDescription(res.data.result.Description);
+            setImage(res.data.result.Image[0].url)
+        }
+     }).catch((err)=>{console.log(err)});
+  }
+
     async function UploadData(){
-        setTitle("");
-        setDescription("");
         if(Title && Description){
           console.log(Author)
           setLoading(true);
-          await axios.post(`${baseUrl}/create-blog/${Author}`,formData).then((response)=>{
+          await axios.put(`${baseUrl}/EditPost/${id.id}`,formData).then((response)=>{
             if(response.status === 200){
                console.log(response.data)
               //  setBlogId(response.data.id);
-              AppendBlog(response.data.id);
                toast.success(response.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
                setLoading(false);
             }else{
@@ -65,46 +76,30 @@ export default function AddPost(){
                setLoading(false); 
             }
         }).catch((err)=>console.log(err));
-        console.log(formData);
+        // console.log(formData);
         }else{
            toast.info("Please Write Something on title and description to create new post",{position:toast.POSITION.BOTTOM_CENTER});
         }
         
     }
-
-    async function AppendBlog(id){
-        if(id && Author){
-          await axios.post(`${baseUrl}/auth/AddBlog/${Author}`,{blog_id:id}).then(
-            (res)=>{
-                if(res.status === 200){
-                  toast.success(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
-                }else{
-                   toast.info(res.data.msg,{position:toast.POSITION.BOTTOM_CENTER});
-                } 
-            }
-            ).catch((err)=>console.log(err))
-        }else{
-          toast.info("Blog is not added successfully",{position:toast.POSITION.BOTTOM_CENTER});
-        }
-    }
   return (
     <div className="AddPostContainer d-flex flex-column justify-content-center align-items-center">
     <div className="d-flex flex-column justify-content-center align-item-center my-5 Post-Container w-75" >
             <div>
-                <h2 style={{color:"white"}}>Create Your Amazing Blog</h2>
+                <h2 style={{color:"white"}}>Edit Your Amazing Blog</h2>
             </div>
             <div className="my-2">
                 <input type="text" placeholder="Enter Your Title" id="input" className="Title" style={{width:"100%",padding:5}}  onChange={(e)=>{setTitle(e.target.value)}}  value={Title} />
             </div>
             <div className="my-2">
-                <textarea className="textarea" placeholder="Type your magical words here..." name="title" style={{width:"100%",padding:10}} value={Description} rows="8" onChange={(e)=>{setDescription(e.target.value)}} />
+                <textarea placeholder="Type your magical words here..." name="title" style={{width:"100%",padding:10}} value={Description} rows="8" onChange={(e)=>{setDescription(e.target.value)}} />
             </div>
             {/* <div className="my-2">
                 <input type="file" multiple onChange={(e)=>{FileHandling(e)}} style={{width:"100%"}}/>
             </div> */}
              <div className="w-100 d-flex justify-content-between">
                     <div>
-                     <label className="file-label bg-primary" for="files" >Select Cover Picture</label>
+                     <label className="file-label bg-primary" for="files" >Change Cover Picture</label>
                       <input   type="file" id="files" className="file-input" 
                       onChange={(e)=>{FileHandling(e)}}/>
                       </div>
@@ -114,13 +109,13 @@ export default function AddPost(){
                       </div>
                    </div> 
       <div className="my-5 d-flex align-items-center justify-content-center">
-        {Loading?<div><div className="btn btn-outline-primary w-100"><PacmanLoader
+        {Loading?<div style={{width:"100%",display:'flex',alignItems: 'center',justifyContent:'center',flexDirection:'column'}}><div className="w-100"><PacmanLoader
         loading={Loading}
         cssOverride={override}
         size={28}
         aria-label="Loading Spinner"/></div>
-        <input type="button" className="btn my-2 btn-outline-danger w-100" onClick={()=>{setLoading(false)}} value="cancel"/></div>
-       :<input type="button" style={{width:"100%"}} value="Add Post" onClick={()=>{UploadData()}} className="btn btn-primary w-50"/>}
+        <input type="button" className="btn my-2 btn-danger w-50" onClick={()=>{setLoading(false)}} value="cancel"/></div>
+       :<input type="button" style={{width:"100%"}} value="Update Post" onClick={()=>{UploadData()}} className="btn btn-primary w-50"/>}
         </div>
         
     </div>
