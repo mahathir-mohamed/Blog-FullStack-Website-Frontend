@@ -22,7 +22,7 @@ export default function AllPost() {
    const [loading,setLoading]=useState(true);
    const [likes,setlikes]=useState();
    const [Page,setPage] = useState(1);
-   const [Limit,setLimit] = useState(3);
+   const [Limit,setLimit] = useState(6);
    const userData = useSelector((state)=>state.user.userDetail);
    const PrevIndex = useRef(1);
    const [maxPage,setmaxPage]=useState();
