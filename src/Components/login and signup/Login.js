@@ -71,13 +71,13 @@ export default function Login() {
                     Are you new? <a href="/Create-Account" style={{width:70,textDecoration:"none",color:"violet"}}>Create Account</a>
                   </div>
                </div>
-            <div className="my-5 d-flex align-items-center justify-content-center w-100">
+            <div className=" d-flex align-items-center justify-content-center w-100">
         {Loading?<div style={{width:"100%",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}><div className=" w-50"><PacmanLoader
         loading={Loading}
         cssOverride={override}
         size={28}
         aria-label="Loading Spinner"/></div>
-        <input type="button" className="btn my-2 btn-danger w-50" onClick={()=>{setLoading(false)}} value="cancel"/></div>
+        <input type="button" className="btn btn-danger w-50" onClick={()=>{setLoading(false)}} value="cancel"/></div>
        :<input type="button" style={{width:"100%"}} value="Login" onClick={()=>{LoginUser()}} className="btn btn-primary w-50"/>}
         </div>
            </div>
