@@ -34,10 +34,12 @@ export default function AllPost() {
         // console.log(PrevIndex.current);
     },[Page]);
     useEffect(()=>{
-      const MaxPage = Math.floor(length/Limit)+1;
-      setmaxPage(MaxPage);
-      console.log(MaxPage);
+      calculateMaxpage();
     },[length,Limit])
+    function calculateMaxpage(){
+       const MaxPage = Math.floor(length/Limit);
+       setmaxPage(MaxPage);
+    }
     useEffect(()=>{
       setlikes(userData.likes)
     },[userData]);
@@ -77,27 +79,33 @@ export default function AllPost() {
 
       {/* <div style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}><lottie-player src="https://assets10.lottiefiles.com/private_files/lf30_e3pteeho.json"  background="transparent"  speed="1" style={{width:300,height:300}}  loop  autoplay></lottie-player></div> */}   
         </div>
-        <div className="d-flex justify-content-around w-100">
+        {Blog?
+        <div className="d-flex justify-content-around w-100" style={{marginBottom:20}}>
            <input type="button"onClick={()=>{
+            calculateMaxpage()
+            console.log("prev"+Page);
             if(Page>1){
-               setPage(Page-1);
+               setPage((Page)=>Page-1);
                fetchPosts();
+               
             }else{
               toast.info("This is end of the page",{position:toast.POSITION.BOTTOM_CENTER})
             }
-            
             PrevIndex.current = Page;
-            }}   className="btn btn-primary" value="Prev"/>
+            }}  className="btn btn-primary" value="Back"/>
            <input type="button" onClick={()=>{
-            if(Page<maxPage){
-              setPage(Page+1);
+            calculateMaxpage();
+            if(Page<=maxPage){
+              setPage((Page)=>Page+1);
               fetchPosts();
+              console.log(length,maxPage,Page);
             }else{
+              console.log(maxPage,Page);
               toast.info("No more pages left",{position:toast.POSITION.BOTTOM_CENTER})
             }
             }}  className="btn btn-primary" value="Next"/>
-        </div>
-         <ToastContainer/>
+        </div>:null}
+        <ToastContainer/>
     </Container>
   )
 }
