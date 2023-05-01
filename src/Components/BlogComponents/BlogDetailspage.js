@@ -140,9 +140,11 @@ export default function BlogDetailspage() {
               <div className="CommentSection">
                 <h4>Comments</h4>
                 <div className="CommentTextBox">
+                  <div style={{width:"13%"}}>
                   <img src={ImgUrl} style={{width:35,marginTop:-35,height:35,borderRadius:50}}/>
+                  </div>
                   <div style={{width:"90%"}}>
-                  <textarea style={{width:"90%",borderColor:"black",borderWidth:1}}placeholder="Share your thoughts here" value={Comment} onChange={(e)=>{setComment(e.target.value)}}></textarea>
+                  <textarea style={{width:"90%",borderColor:"black",borderWidth:1,padding:10}}placeholder="share your thoughts here..." value={Comment} id="commenttext" onChange={(e)=>{setComment(e.target.value)}}></textarea>
                   <input className="btn btn-primary" type="button" onClick={()=>{AddComment()}}value="Add comment"/>
                   </div>
                 </div>

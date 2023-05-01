@@ -259,11 +259,19 @@ input:focus {
   height:100%
 }
 .CommentTextBox{
-  margin-bottom: 100px;
+  margin-bottom:100px;
   width:100%;
   display:flex;
-  justify-content:space-evenly;
+  /* border:1px solid black; */
+  padding:10px;
+  justify-content:space-between;
   align-items:center;
+}
+#commenttext::placeholder{
+  color:rgb(100, 98, 98);
+}
+#commenttext{
+  color:black;
 }
 .ReccomentDetail{
   width:60%;
