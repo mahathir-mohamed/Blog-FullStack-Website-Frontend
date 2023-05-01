@@ -8,6 +8,7 @@ import Cookies from 'js-cookie';
 import {baseUrl} from "../../config/BaseApi";
 import {useSelector} from 'react-redux';
 import {toast,ToastContainer} from 'react-toastify';
+import { AiOutlineArrowRight,AiOutlineArrowLeft } from "react-icons/ai";
 
 export default function AllPost() {
   const override: CSSProperties = {
@@ -81,19 +82,23 @@ export default function AllPost() {
         </div>
         {Blog?
         <div className="d-flex justify-content-around w-100" style={{marginBottom:20}}>
-           <input type="button"onClick={()=>{
+          <div className="btn btn-primary" style={{display:"flex",flexDirection:"row",alignItems:"center",width:100,justifyContent:"space-around"}} onClick={()=>{
             calculateMaxpage()
             console.log("prev"+Page);
             if(Page>1){
                setPage((Page)=>Page-1);
                fetchPosts();
-               
             }else{
               toast.info("This is end of the page",{position:toast.POSITION.BOTTOM_CENTER})
             }
             PrevIndex.current = Page;
-            }}  className="btn btn-primary" value="Back"/>
-           <input type="button" onClick={()=>{
+            }} >
+            <AiOutlineArrowLeft/>
+            <div>
+              Back
+            </div>
+            </div>
+            <div className="btn btn-primary" style={{display:"flex",flexDirection:"row",alignItems:"center",width:100,justifyContent:"space-around"}} onClick={()=>{
             calculateMaxpage();
             if(Page<=maxPage){
               setPage((Page)=>Page+1);
@@ -103,7 +108,12 @@ export default function AllPost() {
               console.log(maxPage,Page);
               toast.info("No more pages left",{position:toast.POSITION.BOTTOM_CENTER})
             }
-            }}  className="btn btn-primary" value="Next"/>
+            }}   >
+            <div>
+              Next
+            </div>
+             <AiOutlineArrowRight/>
+            </div>
         </div>:null}
         <ToastContainer/>
     </Container>
