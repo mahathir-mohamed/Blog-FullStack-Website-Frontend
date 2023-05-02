@@ -38,7 +38,7 @@ export default function AllPost() {
       calculateMaxpage();
     },[length,Limit])
     function calculateMaxpage(){
-       const MaxPage = Math.floor(length/Limit);
+       const MaxPage = Math.ceil(length/Limit);
        setmaxPage(MaxPage);
     }
     useEffect(()=>{
