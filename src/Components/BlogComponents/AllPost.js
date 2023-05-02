@@ -30,8 +30,21 @@ export default function AllPost() {
    const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         fetchPosts();
+<<<<<<< HEAD
         // AOS.init();
     },[user,Page]);
+=======
+        AOS.init();
+        // console.log(PrevIndex.current);
+    },[Page]);
+    useEffect(()=>{
+      calculateMaxpage();
+    },[length,Limit])
+    function calculateMaxpage(){
+       const MaxPage = Math.ceil(length/Limit);
+       setmaxPage(MaxPage);
+    }
+>>>>>>> 11ade5082b3380e4ad268e1669bad91a921f3055
     useEffect(()=>{
       setlikes(userData.likes)
     },[userData]);
