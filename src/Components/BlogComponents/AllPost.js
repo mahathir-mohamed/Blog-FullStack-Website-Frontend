@@ -26,34 +26,22 @@ export default function AllPost() {
    const [Limit,setLimit] = useState(6);
    const userData = useSelector((state)=>state.user.userDetail);
    const PrevIndex = useRef(1);
-   const [maxPage,setmaxPage]=useState();
    const[length,setLength]=useState()
    const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         fetchPosts();
-        AOS.init();
-        // console.log(PrevIndex.current);
-    },[Page]);
-    useEffect(()=>{
-      calculateMaxpage();
-    },[length,Limit])
-    function calculateMaxpage(){
-       const MaxPage = Math.floor(length/Limit);
-       setmaxPage(MaxPage);
-    }
+        // AOS.init();
+    },[user,Page]);
     useEffect(()=>{
       setlikes(userData.likes)
     },[userData]);
-    useEffect(() => {
-    PrevIndex.current = Page;
-  },[length]);
 
   function fetchPosts(){
     axios.get(`${baseUrl}/all-post?page=${Page}&limit=${Limit}`).then((response)=>{
-      setBlog(response.data.result);
-      setLength(response.data.TotalPost)
-      if(Blog){
+      if(response.status==200){
             setLoading(false);
+            setBlog(response.data.result);
+            setLength(response.data.TotalLength);
           }
       }).catch((error)=>{console.log(error)})
   }
@@ -83,15 +71,13 @@ export default function AllPost() {
         {Blog?
         <div className="d-flex justify-content-around w-100" style={{marginBottom:20}}>
           <div className="btn btn-primary" style={{display:"flex",flexDirection:"row",alignItems:"center",width:100,justifyContent:"space-around"}} onClick={()=>{
-            calculateMaxpage()
-            console.log("prev"+Page);
+            // console.log("prev"+Page);
             if(Page>1){
                setPage((Page)=>Page-1);
-               fetchPosts();
+              //  fetchPosts();
             }else{
               toast.info("This is end of the page",{position:toast.POSITION.BOTTOM_CENTER})
             }
-            PrevIndex.current = Page;
             }} >
             <AiOutlineArrowLeft/>
             <div>
@@ -99,13 +85,11 @@ export default function AllPost() {
             </div>
             </div>
             <div className="btn btn-primary" style={{display:"flex",flexDirection:"row",alignItems:"center",width:100,justifyContent:"space-around"}} onClick={()=>{
-            calculateMaxpage();
-            if(Page<=maxPage){
+            if(Page<length){
               setPage((Page)=>Page+1);
-              fetchPosts();
-              console.log(length,maxPage,Page);
+              // console.log("next"+length,Page);
             }else{
-              console.log(maxPage,Page);
+              // console.log(length);
               toast.info("No more pages left",{position:toast.POSITION.BOTTOM_CENTER})
             }
             }}   >
