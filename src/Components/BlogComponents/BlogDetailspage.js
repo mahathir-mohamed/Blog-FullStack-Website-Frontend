@@ -109,7 +109,7 @@ export default function BlogDetailspage() {
   //           }).catch((err)=>console.log(err))
   // }
   function ReccomentedBlog(authorid){
-    axios.get(`${baseUrl}/RecommentPost/${BlogId}`,authorid).then((res)=>{
+    axios.get(`${baseUrl}/RecommentPost/${BlogId}`,AuthorId).then((res)=>{
       console.log(res.data);
       if(res.status===200){
         setRecomment(res.data.result)
@@ -159,7 +159,7 @@ export default function BlogDetailspage() {
               <h5>Reccomented Blogs</h5>
               <div style={{display:"flex",justifyContent:"space-evenly"}}> <p>More from</p><p style={{color:"violet"}}>{Username}</p></div>
               <div>
-                 <RecommentCard Title={Title} Image={ThumbnailImage} Description={Description}/>
+                 <RecommentCard Title={Title} Image={ThumbnailImage} id={BlogId} Description={Description}/>
               </div>
               <div>
               <h5 style={{color:"blue",marginTop:20}}>People also viewed</h5>

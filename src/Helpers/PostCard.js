@@ -112,13 +112,13 @@ export default function PostCard(props) {
                 {!props.MyBlog?
                 <div style={{width:"40%"}} className="d-flex flex-row-reverse p-1   align-items-center justify-content-between mr-2">
                     <BsFillChatLeftHeartFill size={25} />
-                    <RWebShare data={{text:"Blogger's World Share",url: "http://localhost:3000",title: "Blogger's World Share Link"}} writeText="http://localhost:3000" onClick={() => console.log("shared successfully!")}>
+                    <RWebShare data={{url:`https://blog-full-stack-website-frontend.vercel.app/BlogDetail/${props.id}`,title: "Blogger's World Share Link"}} writeText={`${window.location.href}/${props.id}`} onClick={() => console.log("shared successfully!")}>
                         <BsFillSendFill size={25}/>
                     </RWebShare>
                     {liked?<AiTwotoneHeart onClick={()=>{ToggleLike()}} size={35}  color="red"/>:<AiOutlineHeart onClick={()=>{ToggleLike()}} size={35}  color="black"/>}
                     
                 </div>:<div style={{width:"40%"}} className="d-flex flex-row-reverse p-1   align-items-center justify-content-between mr-2">
-                    <RWebShare data={{text:"Blogger's World Share",url: "http://localhost:3000",title: "Blogger's World Share Link"}} writeText="http://localhost:3000" onClick={() => console.log("shared successfully!")}>
+                    <RWebShare data={{text:"Blogger's World Share",url:`${window.location.href}/+${props.id}`,title: "Blogger's World Share Link"}} writeText={`${window.location.href}/+${props.id}`} onClick={() => console.log("shared successfully!")}>
                     <BsFillSendFill size={25}/>
                     </RWebShare>
                     <a href={`/Edit-Post/${props.id}`}>
