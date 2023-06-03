@@ -278,7 +278,7 @@ input:focus {
   height:100%
 }
 .userComment{
-  border:1px solid black;
+  border:1px solid grey;
   border-radius: 10px;
   padding:10px;
   justify-content: space-around;

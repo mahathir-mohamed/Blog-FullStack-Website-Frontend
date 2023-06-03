@@ -33,22 +33,29 @@ export default function BlogDetailspage() {
     const [Adminname,setAdminname]=useState();
     const [UserId,setUserId]=useState();
     const [Recomment,setRecomment]=useState([]);
+    const [AuthorBlogs,setAuthorBlogs]=useState([]);
     const [AuthorId,setAuthorId]=useState();
+    const [WriterBlogs,setWriterBlogs]=useState();
+
     const userData = useSelector((state)=>state.user.userDetail)
     const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         FetchPost();
         FetchAllComment();
     },[])
-
-    useEffect(()=>{
+      useEffect(()=>{
       if(AuthorId){
        ReccomentedBlog(AuthorId) 
+        fetchAuthorBlogs();
       }
     },[AuthorId])
     useEffect(()=>{
        setComments(Comments); 
     },[Comments])
+
+    useEffect(()=>{
+       console.log(AuthorBlogs);
+} ,[AuthorBlogs])
 
     function FetchPost(){
       axios.get(`${baseUrl}/Findpost/${BlogId}`).then((res)=>{
@@ -63,14 +70,24 @@ export default function BlogDetailspage() {
             setThumbnailImage(res.data.result.Image[0].url);
             setUsername(res.data.result.Author.Username)
             setLoading(false);
+            const newBlogs = res.data.result.Author.Blogs.filter((blog)=>{return blog.BlogId!=BlogId});
+            setAuthorBlogs(newBlogs);
         }else{
           setLoading(true);
         }
       }).catch((err)=>{console.log(err)})
     }
 
-    function FetchAllComment(){
-      axios.get(`${baseUrl}/Comment/AllComments/${BlogId}`).then((res)=>{
+    async function fetchAuthorBlogs(){
+      axios.get(`${baseUrl}/AuthorBlog/${AuthorId}?BlogId=${BlogId}`).then((res)=>{
+        setWriterBlogs(res.data.result);
+        console.log(res.data.result);
+        console.log("fetched")
+      }).catch((err)=>{console.log(err)});
+    }
+    
+    async function FetchAllComment(){
+      await axios.get(`${baseUrl}/Comment/AllComments/${BlogId}`).then((res)=>{
         //  console.log(res.data);
         if(res.status === 200){
           setComments(res.data.result);
@@ -92,27 +109,17 @@ export default function BlogDetailspage() {
          axios.post(`${baseUrl}/Comment/AddComment/${BlogId}`, data).then((res)=>{
         console.log(res.data);
         if(res.status===200){
-          //  console.log(res.data);
-           setComment("");
+            setComment("");
+            window.location.reload();
         }
       }).catch((err)=>{console.log(err)})
       }
     }
-  // function FindUser(){
-  //   axios.get(`${baseUrl}/auth/FindUser/${user}`).then((res)=>{
-  //             if(res.status===200){
-  //               // console.log(res.data.result)
-  //                setImgUrl(res.data.result.Image[0].url);
-  //                setAdminname(res.data.result.Username);
-  //             }
-  //             // console.log(res.data);
-  //           }).catch((err)=>console.log(err))
-  // }
   function ReccomentedBlog(authorid){
     axios.get(`${baseUrl}/RecommentPost/${BlogId}`,AuthorId).then((res)=>{
       console.log(res.data);
       if(res.status===200){
-        setRecomment(res.data.result)
+        setRecomment(res.data.result);
       }
     }).catch((err)=>{console.log(err)})
   }
@@ -157,9 +164,16 @@ export default function BlogDetailspage() {
             </div>
             <div className="RecommandScreen">
               <h5>Reccomented Blogs</h5>
-              <div style={{display:"flex",justifyContent:"space-evenly"}}> <p>More from</p><p style={{color:"violet"}}>{Username}</p></div>
+
+              {WriterBlogs?<div style={{display:"flex",justifyContent:"space-evenly"}}> <p>More from</p><p style={{color:"violet"}}>{Username}</p></div>:null}
               <div>
-                 <RecommentCard Title={Title} Image={ThumbnailImage} id={BlogId} Description={Description}/>
+                {WriterBlogs?WriterBlogs.map((item,index)=>{
+                  return(
+                    <div >
+                    <RecommentCard key={index} Title={item.BlogId.Title} Image={item.BlogId.Image[0].url} id={item.BlogId._id} Description={item.BlogId.Description}/>
+                    </div>
+                  )
+                }):null}
               </div>
               <div>
               <h5 style={{color:"blue",marginTop:20}}>People also viewed</h5>

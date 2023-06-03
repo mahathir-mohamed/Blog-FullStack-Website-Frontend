@@ -53,7 +53,8 @@ function Header() {
             <Nav.Link href="/">
                  <input style={{width:"100%"}} type="button" value="Trending Blogs" className="btn btn-primary"/>
             </Nav.Link>
-            <Nav.Link href="#home">
+            {/* <Nav.Link href=""> */}
+            <div class>
   <Dropdown>
       <Dropdown.Toggle style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",marginRight:10}} variant="" id="dropdown-basic">
           <img src={img} width="30" height="30" style={{borderRadius:50}}/>
@@ -94,7 +95,8 @@ function Header() {
         
       </Dropdown.Menu>
     </Dropdown> 
-            </Nav.Link>
+    </div>
+            {/* </Nav.Link> */}
           </Nav>
         </Navbar.Collapse>
         </div>

@@ -9,6 +9,7 @@ import {baseUrl} from "../../config/BaseApi";
 import {useSelector} from 'react-redux';
 import {toast,ToastContainer} from 'react-toastify';
 import { AiOutlineArrowRight,AiOutlineArrowLeft } from "react-icons/ai";
+import CommentModal from './CommentModal';
 
 export default function AllPost() {
   const override: CSSProperties = {
@@ -24,9 +25,12 @@ export default function AllPost() {
    const [likes,setlikes]=useState();
    const [Page,setPage] = useState(1);
    const [Limit,setLimit] = useState(6);
+   const [isHaveComment,setisHaveComment]=useState(false);
    const userData = useSelector((state)=>state.user.userDetail);
    const PrevIndex = useRef(1);
    const[length,setLength]=useState()
+   const[commentId,setCommentId]=useState();
+    const [Comments,setComments]=useState();
    const user = Cookies.get("user_id").replace(/"|'/g, '');
     useEffect(()=>{
         fetchPosts();
@@ -34,7 +38,27 @@ export default function AllPost() {
     useEffect(()=>{
       setlikes(userData.likes)
     },[userData]);
-
+  useEffect(()=>{
+      // console.log(commentId);
+      if(commentId){
+         FetchAllComment(commentId);
+      }
+  },[commentId])
+    async function FetchAllComment(id){
+      await axios.get(`${baseUrl}/Comment/AllComments/${id}`).then((res)=>{
+         console.log(res.data.result);
+         if(res.data.result.length > 0){
+            setComments(res.data.result);
+            setisHaveComment(true)
+         }else{
+          setisHaveComment(false)
+         }
+        if(res.data.status == 200){
+          console.log(res.data.result.CommentId.Comment);
+          
+        }
+      }).catch((err)=>{console.log(err)})
+    }
   function fetchPosts(){
     axios.get(`${baseUrl}/all-post?page=${Page}&limit=${Limit}`).then((response)=>{
       if(response.status==200){
@@ -44,17 +68,20 @@ export default function AllPost() {
           }
       }).catch((error)=>{console.log(error)})
   }
+  const [isOpen, setIsOpen] = useState(false);
+  function closeModal() {setIsOpen(!isOpen)}
+
 
   return (
     <Container className="test">
+      <CommentModal isHaveComment={isHaveComment} isOpen={isOpen} setIsOpen={setIsOpen} closeModal={closeModal} Comments={Comments} commentId={commentId}/>
         <div className="d-flex justify-content-center" style={{width:"100%",padding:20}}>
             <h1  style={{textAlign:"center"}}>Trending Blog Posts</h1>
         </div>
         <div className="PostCard">
           {Blog?Blog.map((item,index)=>{
             return(
-              
-              <PostCard data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username} AuthorImage={item.Author.Image[0].url}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes}/>
+              <PostCard  data-aos="fade-up" mobile={innerWidth>=700?true:false}   key={index} Title={item.Title} id={item._id} Desc={item.Description} Author={item.Author.Username} AuthorImage={item.Author.Image[0].url}  createdAt={item.createdAt} image={item.Image[0].url} likes={likes} isOpen={isOpen} setIsOpen={setIsOpen} commentId={commentId} setCommentId={setCommentId} FetchAllComment={FetchAllComment} />
             )
           }):<ClipLoader
         color="blue"

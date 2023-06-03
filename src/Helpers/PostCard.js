@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import Moment from 'react-moment';
-import { AiTwotoneHeart,AiOutlineHeart,AiFillDelete,AiFillEdit } from "react-icons/ai";
+import { AiTwotoneHeart,AiOutlineHeart,AiFillDelete,AiFillEdit} from "react-icons/ai";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { RWebShare } from "react-web-share";
@@ -43,7 +43,6 @@ export default function PostCard(props) {
           isBlogLiked()
         } 
     },[props.likes])
-
     function isBlogLiked(){
         if (props.likes.filter(e => e.BlogId === props.id).length > 0) {
             setLiked(true);
@@ -78,6 +77,8 @@ export default function PostCard(props) {
         props.openModal();
     }
   
+  function openModal() {props.setIsOpen(!props.isOpen)}
+  function closeModal() {props.setIsOpen(!props.isOpen)}
   return (
     <div className="CardDesign">
        <a href={`/BlogDetail/${props.id}`} style={{textDecoration:"none",color:"black"}}>
@@ -104,14 +105,18 @@ export default function PostCard(props) {
                       <p style={{fontFamily:"Delicious Handrawnm",marginTop:-18}}><Moment format="YYYY/MM/DD HH:mm">{props.createdAt}</Moment></p>
                     </div>
                 </div>
-                {/* <div style={{marginTop:-30,padding:6,display:"flex",justifyContent:"space-between",width:"100%"}}>
-                    
+                {/* <div style={{marginTop:-30,padding:6,display:"flex",justifyContent:"space-between",width:"100%"}}>  
                 </div> */}
             </div>
             </a>
                 {!props.MyBlog?
                 <div style={{width:"40%"}} className="d-flex flex-row-reverse p-1   align-items-center justify-content-between mr-2">
-                    <BsFillChatLeftHeartFill size={25} />
+                    <BsFillChatLeftHeartFill size={25} onClick={()=> {
+                        props.setCommentId(props.id)
+                        // props.FetchAllComment(props.CommentId)
+                        openModal()
+
+                    }} />
                     <RWebShare data={{url:`https://blog-full-stack-website-frontend.vercel.app/BlogDetail/${props.id}`,title: "Blogger's World Share Link"}} writeText={`${window.location.href}/${props.id}`} onClick={() => console.log("shared successfully!")}>
                         <BsFillSendFill size={25}/>
                     </RWebShare>

@@ -17,8 +17,9 @@ function App() {
   const[UserData,setUserData]=useState();
   const dispatch = useDispatch();
   const [Success,setSuccess]=useState(false); 
+  const userId = Cookies.get('user_id')
 
-  const id = Cookies.get('user_id').replace(/"|'/g, '');
+  const id = userId?Cookies.get('user_id').replace(/"|'/g, ''):null;
   useEffect(()=>{
     var token = Cookies.get('Token');
     if(token){
